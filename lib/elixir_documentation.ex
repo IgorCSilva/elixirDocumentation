@@ -12,6 +12,12 @@ defmodule ElixirDocumentation do
 
   @doc """
   Retorna a subtração entre o primeiro e o segundo parâmetro.
+
+  ## Parâmetros
+
+    - a: Um número qualquer.
+    - b: Outro número qualquer.
+
   """
   def sub(a, b) do
     a - b

@@ -5,10 +5,18 @@ defmodule ElixirDocumentationTwo do
 
   @doc """
   Returna a multiplicação entre dois números.
-  
-  ## Example
-    iex> ElixirDocumentationTwo.mult(2, 4)
-    8
+  ## Parâmetros
+
+    - a: Um número qualquer.
+    - b: Outro número qualquer.
+
+  ## Exemplos
+
+      iex> ElixirDocumentationTwo.mult(2, 4)
+      8
+
+      iex> ElixirDocumentationTwo.mult(-3, 5)
+      -15
   """
   def mult(a, b) do
     a * b

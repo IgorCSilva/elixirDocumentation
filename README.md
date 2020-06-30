@@ -19,7 +19,7 @@ $> mix new {project-name}
 
   - ex_doc possui as funcionalidades para se trabalhar com documentação e earmark é um dos conversores de Markdown para HTML.
 
-- Podemos adicionar também o nome e uma url para o projeto no mesmo arquivo:
+- Podemos adicionar também o nome e uma url para o projeto no mesmo arquivo. A url servirá para o redirecionamento para o código dentro do github.
 ```elixir
 def project do
   [
@@ -47,22 +47,6 @@ $> mix docs
 
 - Agora você pode abrir o arquivo `root/docs/index.html`.
 
-**TODO: Add description**
+### Importante
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `elixir_documentation` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:elixir_documentation, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/elixir_documentation](https://hexdocs.pm/elixir_documentation).
-
+- Para manter as boas práticas é recomendável sempre documentar um módulo. Caso não se queira documentá-lo pelo menos não o deixe em branco, digitando `@moduledoc false` como foi feito no `ElixirDocumentationThree`. Desta forma o módulo(incluindo suas funções) não serão mostrados na documentação gerada.
