@@ -1,18 +1,19 @@
 defmodule ElixirDocumentation do
   @moduledoc """
-  Documentation for `ElixirDocumentation`.
+  Este módulo realiza algumas operações matemáticas.
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> ElixirDocumentation.hello()
-      :world
-
+  Retorna a soma de dois valores.
   """
-  def hello do
-    :world
+  def sum(a, b) do
+    a + b
+  end
+
+  @doc """
+  Retorna a subtração entre o primeiro e o segundo parâmetro.
+  """
+  def sub(a, b) do
+    a - b
   end
 end
