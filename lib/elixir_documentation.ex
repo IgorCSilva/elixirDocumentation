@@ -5,6 +5,11 @@ defmodule ElixirDocumentation do
 
   @doc """
   Retorna a soma de dois valores.
+
+  ## Exemplos
+
+      iex> ElixirDocumentation.sum(3, 4)
+      7
   """
   def sum(a, b) do
     a + b

@@ -3,6 +3,6 @@ defmodule ElixirDocumentationTest do
   doctest ElixirDocumentation
 
   test "greets the world" do
-    assert ElixirDocumentation.hello() == :world
+    assert ElixirDocumentation.sum(2, 6) == 8
   end
 end

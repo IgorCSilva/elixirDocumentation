@@ -50,3 +50,9 @@ $> mix docs
 ### Importante
 
 - Para manter as boas práticas é recomendável sempre documentar um módulo. Caso não se queira documentá-lo pelo menos não o deixe em branco, digitando `@moduledoc false` como foi feito no `ElixirDocumentationThree`. Desta forma o módulo(incluindo suas funções) não serão mostrados na documentação gerada.
+
+- Incluir exemplos nos @doc é uma boa prática também. Ao rodar os testes eles são executados e verificados.
+
+### Observação
+ 
+- Fiz uma pequena alteração em `root/test/elixir_documentation_test.exs` por ter removido a função que ele usa inicialmente e passei a utilizar uma função que criei.
