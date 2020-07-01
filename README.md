@@ -1,58 +1,285 @@
-# ElixirDocumentation
 
-### Criando projeto
+# Instalando o Elixir
+https://elixir-lang.org/install.html
+
+
+# Bom ver primeiro.
+https://elixirschool.com/pt/lessons/basics/iex-helpers/ (mostra como ler documentação dos módulos e como utilizá-los com exemplos.)
+
+# Dicas
+- Os dados são imutáveis. Codar em elixir é transformar os dados a cada passo(função) para se obter o resultado no final.
+- Funções padrões do Elixir e Erlang utilizam (_). Ex.: String.to_integer().
+- Sempre documentar os módulos. Utilizando @moduledoc false quando não quiser descrever algo.
+
+# Tutorial
+- Executando iex no terminal você entra no terminal iterativo do elixir.
+
 ```console
-$> mix new {project-name}
+$ iex
+
+  Erlang/OTP 20 [erts-9.1] [source] [64-bit] [smp:4:4] [ds:4:4:10]
+  [async-threads:10] [hipe] [kernel-poll:false]h
+  Interactive Elixir (x.y.z) - press Ctrl+C to exit (type h() ENTER for h
+  elp)
+
+iex(1)>
 ```
 
-- Adicionar as seguintes dependências ao projeto (`root/mix.exs`):
-```elixir
-# Run "mix help deps" to learn about dependencies.
-  defp deps do
-    [
-      #...
-      {:earmark, "~> 1.2", only: :dev},
-      {:ex_doc, "~> 0.19", only: :dev}
-    ]
+### Compilando seus arquivos.
+- Fora do iex:
+```console
+$ elixir hello.exs
+```
+
+- Dentro do iex:
+```console
+iex(1)> c "hello.exs"
+```
+
+### Exemplos de Regex
+```console
+iex> Regex.run ~r{[aeiou]}, "caterpillar"
+["a"]
+iex> Regex.scan ~r{[aeiou]}, "caterpillar"
+[["a"], ["e"], ["i"], ["a"]]
+iex> Regex.split ~r{[aeiou]}, "caterpillar"
+["c", "t", "rp", "ll", "r"]
+iex> Regex.replace ~r{[aeiou]}, "caterpillar", "*"
+"c*t*rp*ll*r"
+```
+
+### Parâmetros default
+defmodule Example do
+  def func(p1, p2 \\ 2, p3 \\ 3, p4) do
+    IO.inspect [p1, p2, p3, p4]
   end
+end
+
+```console
+Example.func("a", "b") # => ["a",2,3,"b"]
+Example.func("a", "b", "c") # => ["a","b",3,"c"]
+Example.func("a", "b", "c", "d") # => ["a","b","c","d"]
 ```
 
-  - ex_doc possui as funcionalidades para se trabalhar com documentação e earmark é um dos conversores de Markdown para HTML.
+### Operador Pipe |>
+- Sem ele:
+filing = prepare_filing(sales_tax(Orders.for_customers(DB.find_customers), 2018))
 
-- Podemos adicionar também o nome e uma url para o projeto no mesmo arquivo. A url servirá para o redirecionamento para o código dentro do github.
-```elixir
-def project do
-  [
-    app: :issues,
-    escript: escript_config(),
-    version: "0.1.0",
-    name: "Documentation",
-    source_url: "https://github.com/IgorCSilva/elixir_documentation",
-    elixir: "~> 1.10",
-    start_permanent: Mix.env() == :prod,
-    deps: deps()
-  ]
+- ou
+people = DB.find_customers
+orders = Orders.for_customers(people)
+tax = sales_tax(orders, 2018)
+filing = prepare_filing(tax)
+
+- Com ele:
+filing = DB.find_customers
+  |> Orders.for_customers
+  |> sales_tax(2018)
+  |> prepare_filing
+
+
+### Qual escolher entre Maps, Structs, e lista de palavras chaves.
+siga a ordem:
+• Você quer realizar pattern-match com o conteúdo? (por exemplo dar match em :name onde quer que ele esteja)
+  Se sim use map.
+• Deseja mais de uma entrada com a mesma chave?
+  Se sim lista de palavras chaves.
+• Precisa garantir que os elementos estão em ordem?
+  Se sim lista de palavras chaves.
+• A estrutura do dado deve ser sempre a mesma?
+  Se sim use Struct.
+• Se você chegou até aqui ent:
+  Use a map.
+
+### 'string' vs "string"
+- Usando '' temos uma lista de caracteres.
+- Usando "" temos uma lista de bytes. (Pode-se utilizar mais de um byte para representar um único caracter)
+
+### Tornando o projeto executável por linha de comando.
+
+- Crie um projeto.
+```console
+$> mix new escript
+```
+
+- Siga os seguintes passos:
+  - Em escript > lib cria uma pasta chamada escript. Nela crie o arquivo cli.ex. Em cli.ex crie um módulo chamado Escript.CLI e uma função main que vai receber os argumentos enviados pelo terminal.
+  ```js
+  defmodule Escript.CLI do
+    def main(argv) do
+      OptionParser.parse(argv, switches: [help: :boolean], aliases: [h: :help])
+      |> IO.inspect
+    end
+  end
+  ```
+  - No arquivo mix.exs adicione 'escript: escrip_config(),' em def project.
+  - Adicione a função abaixo:
+  ```js
+    defp escript_config do
+      [
+      main_module: Escript.CLI
+      ]
+    end
+  ```
+  - Compile e empacote a aplicação:
+  ```console
+  $> mix escript.build
+  ```
+  - Agora você pode executar
+  ```console
+  $> ./escript arg1 arg2
+  $> ./escript -h
+  ```
+
+### Interagir com um projeto usando o iex.
+```console
+$> iex -S mix
+```
+
+### Usar Logger é uma boa para seguir o fluxo de sua aplicação
+
+### Debugging
+
+- Adicionando breakpoint
+```js
+require IEx; IEx.pry
+```
+
+- Ao entrar no modo pry e chamar binding veremos as variáveis locais.
+
+### Testes
+- Podemos criar testes nos comentários das funções, como:
+```js
+defmodule OpSum do
+
+  @doc"""
+  Recebe dois números e os soma.
+  ## Example
+    iex> OpSum.sum(8, 4)
+    12
+    iex> OpSum.sum(1, 7)
+    3
+  """
+  def sum(a, b) do
+    a + b
+  end
 end
 ```
-
-- Após isso precisamos baixar as dependências. Para isso executamos:
+- Aqui podemos criar um arquivo chamado doc_test.exs dentro da pasta test do projeto criado e adicionar o seguinte código a ele:
+```js
+defmodule DocTest do
+  use ExUnit.Case
+  doctest OpSum
+end
+```
+- Após isso podemos rodar os doctests separadamente, executando a partir da raíz do projeto:
 ```console
-$> mix deps.get
+$> mix test test/doc_test.exs
+```
+- Estes testes também ficam inclusos ao executar os testes gerais:
+```console
+$> mix test
 ```
 
-- Para gerar a documentação execute:
+### Estrutura do projeto
+- Árvore de dependências da aplicação
 ```console
-$> mix docs
+$> mix xref graph
 ```
 
-- Agora você pode abrir o arquivo `root/docs/index.html`.
+- Instalar visualizador de gráficos para gerar imagens das dependências.
+```console
+$> sudo apt install graphviz
+```
 
-### Importante
+- Gerando imagem com grafo de dependências.
+```console
+$> dot -Tpng xref_graph.dot -o xref_graph.png
+```
 
-- Para manter as boas práticas é recomendável sempre documentar um módulo. Caso não se queira documentá-lo pelo menos não o deixe em branco, digitando `@moduledoc false` como foi feito no `ElixirDocumentationThree`. Desta forma o módulo(incluindo suas funções) não serão mostrados na documentação gerada.
+### Monitorando servidor
+- Monitorar alocação de memória, processos e muito mais.
+```console
+iex> :observer.start()
+```
 
-- Incluir exemplos nos @doc é uma boa prática também. Ao rodar os testes eles são executados e verificados.
+# Processos
+- Para lançar um processo podemos usar spawn.
+```elixir
+defmodule Spawn1 do
+  def greet do
+    receive do
+      {:ok, msg} -> IO.puts msg
+      greet()
+    end
+  end
+end
 
-### Observação
- 
-- Fiz uma pequena alteração em `root/test/elixir_documentation_test.exs` por ter removido a função que ele usa inicialmente e passei a utilizar uma função que criei.
+# The client.
+pid = spawn(Spawn1, :greet, [])
+send pid, {:ok, "World!"}
+```
+- O spawn retorna o id do processo(pid). Aqui o `send` foi utilizado para mandar uma mensagem para o processo lançado. Assim a função lançada `greet` vai receber a mensagem e mostrá-la usando `IO.puts`.
+
+- Para linkar dois processos, com o objetivo de um ficar sabendo quando o outro apresentar problema, usamos o `spawn_link`. Caso um processo apresente algum problema o outro também parará de executar.
+```elixir
+
+defmodule Link1 do
+  import :timer, only: [sleep: 1]
+
+  def sad_function do
+    sleep 500
+    exit(:boom)
+  end
+
+  def run do
+    # Quando um processo finaliza sua execução de forma inesperada(usando exit, por exemplo)
+    # toda a aplicação para. Para que isso não aconteça precisamos fazer com que o exit nos
+    # envie uma mensagem, e para isso usamos trap_exit.
+    Process.flag(:trap_exit, true)
+
+    # Lançando processo linkado. Com isso, quando um processo
+    # é finalizado o outro fica sabendo.
+    spawn_link(Link1, :sad_function, [])
+    
+    receive do
+      msg ->
+        IO.puts "MESSAGE RECEIVED: #{inspect msg}"
+    after 1000 ->
+      IO.puts "Nothing heppened as far as I am concerned"
+    end
+  end
+end
+
+Link1.run
+```
+
+- Também temos como fazer com que um processo monitore outro com `spawn_monitor`. Diferente do `spawn_link`, este possui apenas uma direção. Apenas o processo que criou monitora o processo criado, além de quando o processo criado parar de executar por algum motivo o processo que monitora continuará sua execução normalmente.
+```elixir
+defmodule Monitor1 do
+  import :timer, only: [ sleep: 1 ]
+
+  def sad_function do
+    sleep 500
+    exit(:boom)
+  end
+
+  def run do
+    res = spawn_monitor(Monitor1, :sad_function, [])
+    IO.puts inspect res
+
+    receive do
+      msg ->
+        IO.puts "MESSAGE RECEIVED: #{inspect msg}"
+    after 1000 ->
+      IO.puts "Nothing heppened as far as I am concerned"
+    end
+  end
+
+end
+
+Monitor1.run
+```
+
+- Então devemos utilizar `spawn_link` quando algum processo apresentar problema e for necessário finalizar a execução do outro. Já o `spawn_monitor` deve ser utilizado quando se quer saber quando algum outro processo foi finalizado por qualquer razão. Utilizando
+`exit` temos informações de qual problema ocorreu e qual o id do processo. Já utilizando `raise` temos uma informação adicional, que é a função onde ocorreu o problema.
