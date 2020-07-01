@@ -141,7 +141,7 @@ end
 
 - Adicionando vários comandos e forçando a serem executados no ambiente de teste. No mesmo arquivo `/mix.exs`:
 ```elixir
-ef project do
+def project do
     [
       #...
       start_permanent: Mix.env() == :prod,
