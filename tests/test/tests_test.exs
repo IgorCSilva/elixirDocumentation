@@ -2,7 +2,7 @@ defmodule TestsTest do
   use ExUnit.Case
   doctest Tests
 
-  test "greets the world" do
-    assert Tests.hello() == :world
+  test "removendo a de dale" do
+    assert Tests.remove_a("dale") == "dle"
   end
 end
