@@ -167,3 +167,5 @@ $> mix deps.get
 $> mix coveralls
 ```
   - Este comando executará os testes primeiro e depois mostrará uma análise dos nossos arquivos. Veremos que o arquivo `lib/tests.ex` está com todas as suas funções testadas, já o arquivo `lib/concat` ainda há o que testar.
+
+- Algo interessante a se fazer é executar `$> mix coveralls.html`, onde será gerado um arquivo html com os arquivos e os devidos reportes de testes em relação a eles.
