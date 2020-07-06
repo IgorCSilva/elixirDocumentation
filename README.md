@@ -283,3 +283,25 @@ Monitor1.run
 
 - Então devemos utilizar `spawn_link` quando algum processo apresentar problema e for necessário finalizar a execução do outro. Já o `spawn_monitor` deve ser utilizado quando se quer saber quando algum outro processo foi finalizado por qualquer razão. Utilizando
 `exit` temos informações de qual problema ocorreu e qual o id do processo. Já utilizando `raise` temos uma informação adicional, que é a função onde ocorreu o problema.
+
+## Map Parallel
+
+- Podemos usar a função map para lançar vários processos e coletar suas mensagens depois. O símbolo ^ faz com que as mensagens sejam coletadas na ordem que os processos foram lançados.
+```elixir
+defmodule Parallel do
+  def pmap(collection, fun) do
+  me = self()
+  collection
+  |> Enum.map(fn (elem) ->
+    spawn_link fn -> (send me, { self(), fun.(elem) }) end
+  end)
+  |> Enum.map(fn (pid) ->
+    receive do { ^pid, result } -> result end
+  end)
+  end
+end
+```
+
+# Nodes
+- Quando se pensa em escala devemos ter em mente o conceito de nós, que é uma abstração para uma máquina. Aprendendo a trabalhar com vários nós estaremos nos habiliando a trabalhar de forma distribuída.
+
