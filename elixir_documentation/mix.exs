@@ -7,7 +7,7 @@ defmodule ElixirDocumentation.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       name: "Documentation",
-      source_url: "https://github.com/IgorCSilva/elixir_documentation",
+      source_url: "https://github.com/IgorCSilva/elixir_projects/elixir_documentation",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
