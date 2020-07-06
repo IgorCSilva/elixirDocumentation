@@ -35,7 +35,8 @@ $ elixir hello.exs
 ```console
 iex(1)> c "hello.exs"
 ```
-
+# Aprendizado
+- Maior parte dos conceitos e código abaixo extraídos do livro `Programming Elixir ≥ 1.6_ Functional __Concurrent __Pragmatic __Fun`, de Dave Thomas.
 ### Exemplos de Regex
 ```console
 iex> Regex.run ~r{[aeiou]}, "caterpillar"
@@ -203,7 +204,7 @@ $> dot -Tpng xref_graph.dot -o xref_graph.png
 iex> :observer.start()
 ```
 
-# Processos
+## Processos
 - Para lançar um processo podemos usar spawn.
 ```elixir
 defmodule Spawn1 do
@@ -284,7 +285,7 @@ Monitor1.run
 - Então devemos utilizar `spawn_link` quando algum processo apresentar problema e for necessário finalizar a execução do outro. Já o `spawn_monitor` deve ser utilizado quando se quer saber quando algum outro processo foi finalizado por qualquer razão. Utilizando
 `exit` temos informações de qual problema ocorreu e qual o id do processo. Já utilizando `raise` temos uma informação adicional, que é a função onde ocorreu o problema.
 
-## Map Parallel
+### Map Parallel
 
 - Podemos usar a função map para lançar vários processos e coletar suas mensagens depois. O símbolo ^ faz com que as mensagens sejam coletadas na ordem que os processos foram lançados.
 ```elixir
@@ -302,6 +303,6 @@ defmodule Parallel do
 end
 ```
 
-# Nodes
+## Nodes
 - Quando se pensa em escala devemos ter em mente o conceito de nós, que é uma abstração para uma máquina. Aprendendo a trabalhar com vários nós estaremos nos habiliando a trabalhar de forma distribuída.
 
