@@ -1,4 +1,7 @@
 
+# Links para aprender elixir
+https://github.com/adolfont/elixir_cop/blob/master/companies/countries/brazil/resources.md
+
 # Instalando o Elixir
 https://elixir-lang.org/install.html
 
@@ -36,7 +39,8 @@ $ elixir hello.exs
 iex(1)> c "hello.exs"
 ```
 # Aprendizado
-- Maior parte dos conceitos e código abaixo extraídos do livro `Programming Elixir ≥ 1.6_ Functional __Concurrent __Pragmatic __Fun`, de Dave Thomas.
+- Maior parte dos conceitos e código abaixo foram extraídos do livro `Programming Elixir ≥ 1.6_ Functional __Concurrent __Pragmatic __Fun`, de Dave Thomas.
+
 ### Exemplos de Regex
 ```console
 iex> Regex.run ~r{[aeiou]}, "caterpillar"
@@ -183,9 +187,14 @@ $> mix test
 ```
 
 ### Estrutura do projeto
-- Árvore de dependências da aplicação
+- Árvore de dependências da aplicação.
 ```console
 $> mix xref graph
+```
+
+- Árvore de dependências da aplicação e gerando sequência de dependências no formato dot.
+```console
+$> mix xref graph --format dot
 ```
 
 - Instalar visualizador de gráficos para gerar imagens das dependências.
@@ -195,7 +204,7 @@ $> sudo apt install graphviz
 
 - Gerando imagem com grafo de dependências.
 ```console
-$> dot -Tpng xref_graph.dot -o xref_graph.png
+$> dot -Grankdir=LR -Epenwidth=2 -Ecolor=#a0a0a0 -Tpng xref_graph.dot -o xref_graph.png
 ```
 
 ### Monitorando servidor
@@ -306,3 +315,34 @@ end
 ## Nodes
 - Quando se pensa em escala devemos ter em mente o conceito de nós, que é uma abstração para uma máquina. Aprendendo a trabalhar com vários nós estaremos nos habiliando a trabalhar de forma distribuída.
 
+# OTP
+- OTP (Open Telecom Protocol) é um método que facilita o desenvolvimento e gerenciamento de projetos.
+
+- Com o GenServer podemos lançar um processo linkado.
+```console
+iex> {:ok, pid} = GenServer.start_link(Module.Name, initial_state)
+```
+- Podemos rastrear o fluxo de chamadas usando o :trace:
+```console
+iex> {:ok,pid} = GenServer.start_link(Sequence.Server, 100, [debug: [:trace]])
+```
+- ou ativando ele durante a execução:
+```console
+iex> :sys.trace pid, true
+```
+- Obtendo dados estatísticos de sua execução:
+```console
+iex> {:ok,pid} = GenServer.start_link(Sequence.Server, 100, [debug: [:statistics]])
+iex> code...
+iex> more code...
+iex> :sys.statistics pid, :get
+```
+- Obtendo status:
+```console
+iex> :sys.get_status pid
+```
+
+# Supervisores
+- Supervisores têm a função de gerenciar outros processos, que podem ser workers(processos que realizam alguma tarefa) ou outros supervisores.
+- Supervisores possuem rotinas para "ressucitar" um processo quando ele sofre algum problema e para de funcionar.
+- Quando um processo revive ele volta para o seu estado inicial. Para que isso não ocorra e o seu estado logo antes de morrer seja mantido usamos o ideia de `Stash`, que é um processo que armazena o estado do processo `Server` antes dele morrer.
